@@ -27,7 +27,7 @@
     "@babel/polyfill": "^7.8.7",
     "@fortawesome/fontawesome-free": "^5.12.1",
     "install": "^0.13.0",
-    "npm": "^6.14.3",
+    "npm": "^6.14.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "webcomponents-lite": "^0.6.0",
