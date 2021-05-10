@@ -1,6 +1,4 @@
-const express = require('express');
 const mongoose = require('mongoose');
-
 const Record = require("../models/records");
 
 
@@ -8,17 +6,19 @@ const getRecords = async (req, res) => {
     try {
         const fetchRecords = await Record.find();
         console.log("PostRecords=----", fetchRecords);
-
-        res.status(200).json(fetchRecords);
-
+        setTimeout(() => {
+            res.status(200).json(fetchRecords);
+        }, 500)
+        
     } catch(error) {
         res.status(404);
         res.json({ message: error.message});
     }
 }
 const createRecord = async (req, res) => {
-    const {brand, type, message, creater, tags, selectedFile } = req.body;
-    const newRecord = new Record({brand, type, message, creater, tags, selectedFile});
+    const {title, message, creator, tags, selectedFile } = req.body;
+    if(!req.userId) return res.status(401).send({message: 'unauthenticated user'});
+    const newRecord = new Record({title, message, creator, tags, selectedFile });
     console.log("req.body=----", req.body);
     try {
         await newRecord.save();
@@ -31,14 +31,30 @@ const createRecord = async (req, res) => {
 
 const deleteRecord = async (req, res) => {
     const {id } = req.params;
-    const deletedrecord = Record.findByIdAndDelete(id);
-    console.log("req.body=----", req.params);
-    try {
-        res.status(200).json(deletedrecord);
-    } catch(error) {
-        res.status(409);
-        res.json({ message: error.message});
-    }
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+
+    const deletedRecord = await Record.findByIdAndRemove(id);
+    console.log("deletedRecord", deletedRecord)
+
+    res.json(deletedRecord);
 }
 
-module.exports = {getRecords, createRecord, deleteRecord};
+const updateEvent = async (req, res) => {
+    const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`no event exist for id ${id}`);
+
+    const { title, message} = req.body;
+    const updatedEvent = await Record.findByIdAndUpdate(id, {title, message, _id:id}, {new: true});
+    res.status(200).json(updatedEvent);
+}
+
+const likeEvent = async (req, res) => {
+    const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`no event exist for id ${id}`);
+
+    const event = await Record.findById(id);
+    const updatedEvent = await Record.findByIdAndUpdate(id, {likeCount: event.likeCount + 1}, {new: true});
+    res.status(200).json(updatedEvent);
+}
+
+module.exports = {getRecords, createRecord, deleteRecord, updateEvent, likeEvent};

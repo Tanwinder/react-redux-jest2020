@@ -5,12 +5,23 @@ const { Schema, model } = mongoose;
 
 
 const Record = new Schema({
-    brand: String,
-    type: String,
-    message: String,
-    creator: String,
-    tags: [String],
-    selectedFile: String,
+    title: String,
+    message: {
+        type: String,
+        default: "testing project"
+    },
+    creator: {
+        type: String,
+        default: "Sid"
+    },
+    tags: {
+        type: [String],
+        default: ["#Vball", "#BBall"]
+    },
+    selectedFile: {
+        type: String,
+        default: ""
+    },
     likeCount: {
         type: Number,
         default: 0,
@@ -22,6 +33,14 @@ const Record = new Schema({
     expiredAt: {
         type: Date,
         default: new Date(),
+    },
+    place: {
+        type: String,
+        default: "Chantilly"
+    },
+    duration: {
+        type: String,
+        default: "2 hours"
     }
 })
 
