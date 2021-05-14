@@ -14,11 +14,14 @@ const authMiddleware = async (req, res, next) => {
         if(token && isCustomSignIn) {
             decoded = jwt.verify(token, secret);
             req.userId = decoded.id;
+            req.firstName = decoded.firstname;
+            req.lastName = decoded.lastname;
         }
-        console.log('token middleware ---', token, req.userId);
+        console.log('token middleware ---', token, req.userId, req.firstName, req.lastName);
         next();
     } catch (error) {
         console.log('error---midleware ---', error);
+        res.status(401).json({error: error});
     }
 }
 

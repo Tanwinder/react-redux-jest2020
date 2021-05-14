@@ -12,7 +12,7 @@ const Record = new Schema({
     },
     creator: {
         type: String,
-        default: "Sid"
+        required: true
     },
     tags: {
         type: [String],
@@ -37,10 +37,6 @@ const Record = new Schema({
     place: {
         type: String,
         default: "Chantilly"
-    },
-    duration: {
-        type: String,
-        default: "2 hours"
     }
 })
 

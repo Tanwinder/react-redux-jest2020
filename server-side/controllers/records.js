@@ -16,36 +16,47 @@ const getRecords = async (req, res) => {
     }
 }
 const createRecord = async (req, res) => {
-    const {title, message, creator, tags, selectedFile } = req.body;
-    if(!req.userId) return res.status(401).send({message: 'unauthenticated user'});
-    const newRecord = new Record({title, message, creator, tags, selectedFile });
+    const {title, message, tags, selectedFile } = req.body;
     console.log("req.body=----", req.body);
+    if(!req.userId) return res.status(401).send({message: 'unauthenticated user'});
+    const newRecord = new Record({title, message, creator: `${req.firstName} ${req.lastName}`,tags, selectedFile });
+    
     try {
         await newRecord.save();
         res.status(200).json(newRecord);
     } catch(error) {
         res.status(409);
-        res.json({ message: error.message});
+        res.status(409).json({error: error});
     }
 }
 
 const deleteRecord = async (req, res) => {
-    const {id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+    try {
+        const {id } = req.params;
+        if(!req.userId) return res.status(401).send("unauthorized user");
+        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
 
-    const deletedRecord = await Record.findByIdAndRemove(id);
-    console.log("deletedRecord", deletedRecord)
+        const deletedRecord = await Record.findByIdAndRemove(id);
+        console.log("deletedRecord", deletedRecord)
 
-    res.json(deletedRecord);
+        res.json(deletedRecord);
+    } catch (error) {
+        res.status(409).json({error: error});
+    }
 }
 
 const updateEvent = async (req, res) => {
-    const { id } = req.params;
-    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`no event exist for id ${id}`);
+    try {
+        if(!req.userId) return res.status(401).send("unauthorized user");
+        const { id } = req.params;
+        if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`no event exist for id ${id}`);
 
-    const { title, message} = req.body;
-    const updatedEvent = await Record.findByIdAndUpdate(id, {title, message, _id:id}, {new: true});
-    res.status(200).json(updatedEvent);
+        const { title, message} = req.body;
+        const updatedEvent = await Record.findByIdAndUpdate(id, {title, message, _id:id}, {new: true});
+        res.status(200).json(updatedEvent);
+    } catch (error) {
+        res.status(409).json({error: error});
+    }
 }
 
 const likeEvent = async (req, res) => {
