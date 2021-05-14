@@ -1,24 +1,26 @@
 import {signIn, signUp} from '../utils/api'
-import { GET_EVENTS, EVENTS_LOADER, POST_EVENT, DELETE_EVENT, UPDATE_EVENT, SET_CURRENT_ID } from '../constant/actionTypes'
+import { AUTH, CALL_AUTH, LOG_OUT } from './actionTypes'
 
-export const checkAuth = () => dispatch => {
-    console.log('checkAuth--------')
-    dispatch({type: EVENTS_LOADER});
+export const checkAuth = () => async dispatch => {
+    // dispatch({type: EVENTS_LOADER});
     // const user = await 
-    dispatch({type: "AUTH", payload: null});
+    const user = document.cookie;
+    dispatch({type: AUTH, payload: null});
 }
 
-export const signin = (formData, router) => async (dispatch) => {
-    try {
-      const { data } = await signIn(formData);
+export const signin = (formData, router, from, alreadyLoggedIn) => ({ type: CALL_AUTH, formData, router, from, alreadyLoggedIn });
+
+// export const signin = (formData, router) => async (dispatch) => {
+//     try {
+//       const { data } = await signIn(formData);
   
-      dispatch({ type: "AUTH", data });
+//       dispatch({ type: "AUTH", payload: data });
   
-      router.push('/events');
-    } catch (error) {
-      console.log(error);
-    }
-  };
+//       router.push('/events');
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
   
   export const signup = (formData, router) => async (dispatch) => {
     try {
@@ -31,3 +33,5 @@ export const signin = (formData, router) => async (dispatch) => {
       console.log(error);
     }
   };
+
+  export const logOut = () => ({type: LOG_OUT})

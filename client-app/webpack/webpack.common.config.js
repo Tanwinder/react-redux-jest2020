@@ -5,7 +5,7 @@ const PrettierPlugin = require('prettier-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 
 
-console.log("dirname:- ",__dirname);
+// console.log("dirname:- ",__dirname);
 
 module.exports = {
   entry: {

@@ -25,8 +25,7 @@ const Input = ({ name, handleChange, label, half, autoFocus, type, handleShowPas
         ),
       } : null}
     />
-    <div><img src="data:image/png;base64,R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7"/></div>
-  </Grid>
+    </Grid>
 );
 
 export default Input;

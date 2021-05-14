@@ -1,9 +1,9 @@
 import React from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Routes from './Routes';
-import Header from '../components/Header/Header'
+// import Grid from '@material-ui/core/Grid';
+import Routes from '../Routes';
+import Header from './Header/Header'
 
 const useStyles = makeStyles((theme) => ({
   rootcontainer: {
@@ -17,7 +17,7 @@ const App = () => {
   return (
     <div className="app">
       <CssBaseline />
-      {/* <Header /> */}
+      <Header />
       <div className={classes.rootcontainer}>
           <Routes />
       </div>

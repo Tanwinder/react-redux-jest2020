@@ -1,19 +1,25 @@
-import { takeLatest,take, call, put } from 'redux-saga/effects'
-import {Api} from '../utils/api'
+import { all, takeLatest, call, put } from 'redux-saga/effects'
+import {Api} from '../utils/api';
+import {GET_EVENTS_CALL, EVENTS_LOADER, GET_EVENTS} from '../actions/actionTypes'
 
 
-function* callEventsSaga(action) {
+function* callEventsSaga() {
+
    try {
-    yield put({type: 'EVENTS_LOADER'});
-    let { data } = yield call(Api.get, "/events");
-    console.log('eventssssss', data)
-    yield put({type: 'GET_EVENTS', payload: data});
+
+    yield put({type: EVENTS_LOADER});
+
+    let { data } = yield call(Api, "/api/events");
+
+    yield put({type: GET_EVENTS, payload: data});
+
    } catch (error) {
        console.log(error)
    }
 }
 
 export default function* eventsSaga() {
-    console.log('events saga')
-    yield takeLatest('GET_EVENTS_ITEMS', callEventsSaga)
+    yield all([
+        takeLatest(GET_EVENTS_CALL, callEventsSaga)
+    ])
 }

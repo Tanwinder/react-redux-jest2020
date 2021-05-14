@@ -1,16 +1,9 @@
-import { GET_EVENTS, EVENTS_LOADER, POST_EVENT, DELETE_EVENT, UPDATE_EVENT, SET_CURRENT_ID } from '../constant/actionTypes'
-import {Api, signIn, signUp} from '../utils/api'
+import { GET_EVENTS_CALL, EVENTS_LOADER, POST_EVENT, DELETE_EVENT, UPDATE_EVENT, SET_CURRENT_ID } from './actionTypes'
 
+export const getEvents = () => ({type: GET_EVENTS_CALL});
 
-export const getEvents = () => async dispatch => {
-    dispatch({type: 'EVENTS_LOADER'});
-
-    try {
-        const events = await Api.get('/events');
-        dispatch({type: 'GET_EVENTS', payload: events && events.data});
-    } catch(error) {
-        console.log(error)
-    }
+let Api = {
+    
 }
 
 export const postEvent = (value) => async dispatch => {

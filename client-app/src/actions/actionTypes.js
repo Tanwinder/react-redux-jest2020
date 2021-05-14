@@ -1,0 +1,11 @@
+export const GET_EVENTS = "GET_EVENTS";
+export const GET_EVENTS_CALL = 'GET_EVENTS_CALL';
+export const EVENTS_LOADER = 'EVENTS_LOADER';
+export const POST_EVENT = 'POST_EVENT';
+export const DELETE_EVENT = 'DELETE_EVENT';
+export const UPDATE_EVENT = 'UPDATE_EVENT';
+export const SET_CURRENT_ID = 'SET_CURRENT_ID';
+export const AUTH = "AUTH";
+export const CALL_AUTH = 'CALL_AUTH';
+export const LOG_OUT = 'LOG_OUT';
+export const LOG_OUT_USER = 'LOG_OUT_USER';

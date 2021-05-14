@@ -13,10 +13,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Navs from './Navs'
 import { useSelector, useDispatch } from 'react-redux'
-
-import {checkAuth} from '../../actions/authActions'
+import { signin, logOut } from '../../actions/authActions';
 
 import './header.scss'
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,24 +31,42 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  userName: {
+    display: 'flex',
+    alignItems: 'center',
+    textAlign: 'center',
+    paddingLeft: '5px'
+
+  },
 }));
 
 export default function MenuAppBar() {
   const classes = useStyles();
-  const [auth, setAuth] = React.useState(true);
+  const auth = useSelector((state) => state.user.userInfo);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const isUser = useSelector((state) => state.user.isUser);
   const dispatch= useDispatch();
+  const history = useHistory();
+  console.log('header auth-------', auth)
 
   useEffect(() => {
-    dispatch(checkAuth())
-  }, [auth])
+    // const localSorageUser = JSON.parse(localStorage.getItem('profile'));
+    // if(localSorageUser && !auth) {
+    //   dispatch(signin(localSorageUser, history, null, true))
+    // }
+    // return () => {
+      
+    // }
+  }, [])
 
   const handleChange = (event) => {
-    
-    setAuth(event.target.checked);
-    console.log('helloooooooo', event.target.checked)
+    if(!event.target.checked) {
+      dispatch(logOut());
+    } else {
+      history.push('/login')
+    }
+    // setAuth(null);
+    // history.push('/login')
   };
 
   const handleMenu = (event) => {
@@ -67,7 +85,7 @@ export default function MenuAppBar() {
             <MenuIcon />
           </IconButton> */}
           <Typography variant="h6" className={classes.title}>
-            Memories
+            Modern App
           </Typography>
           <Navs />
           <div className="authClass">
@@ -81,6 +99,7 @@ export default function MenuAppBar() {
                 color="inherit"
               >
                 <AccountCircle />
+                <Typography className={classes.userName} >{auth?.result.firstName}</Typography>
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -102,14 +121,13 @@ export default function MenuAppBar() {
               </Menu>
             </div>
           )}
-          </div>
-          
           <FormGroup>
             <FormControlLabel
             control={<Switch checked={auth ? true : false} onChange={handleChange} aria-label="login switch" />}
             label={auth ? 'Logout' : 'Login'}
             />
         </FormGroup>
+          </div>
         </Toolbar>
       </AppBar>
     </div>

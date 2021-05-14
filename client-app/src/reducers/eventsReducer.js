@@ -1,4 +1,4 @@
-import {GET_EVENTS, EVENTS_LOADER, POST_EVENT, DELETE_EVENT, UPDATE_EVENT, SET_CURRENT_ID} from '../constant/actionTypes';
+import {GET_EVENTS, EVENTS_LOADER, POST_EVENT, DELETE_EVENT, UPDATE_EVENT, SET_CURRENT_ID} from '../actions/actionTypes';
 
 const initial_state = {
     allEvents: [],
@@ -25,14 +25,12 @@ export default (state= initial_state, action) => {
                 eventLoader: false,
             }  
         case DELETE_EVENT:
-            console.log("delete event", )
             return {
                 ...state,
                 allEvents: state.allEvents && state.allEvents.filter(e => {return (e._id !== action.payload._id)}),
                 eventLoader: false
             } ;
         case UPDATE_EVENT:
-            console.log('action.payload like ', action.payload)
             return {
                 ...state,
                 allEvents: state.allEvents && state.allEvents.map(ev => (ev._id === action.payload._id) ? action.payload : ev),

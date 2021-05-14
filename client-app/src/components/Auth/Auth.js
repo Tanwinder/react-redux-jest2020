@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 // import { GoogleLogin } from 'react-google-login';
 // import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 // import Icon from './icon';
-import { signin, signup } from '../../actions/authActions';
+import { signin, signup, logOut } from '../../actions/authActions';
 // import { AUTH } from '../../constants/actionTypes';
 import useStyles from './styles';
 import Input from './Input';
@@ -16,8 +16,11 @@ const initialState = { firstName: '', lastName: '', email: '', password: '', con
 const Auth = () => {
   const [form, setForm] = useState(initialState);
   const [isAuth, setIsAuth] = useState(false);
+  const stateUser = useSelector(state => state?.user?.userInfo);
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
+  let { from } = location.state || { from: { pathname: "/" } };
   const classes = useStyles();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -33,9 +36,9 @@ const Auth = () => {
     e.preventDefault();
 
     if (isAuth) {
-      dispatch(signup(form, history));
+      dispatch(signup(form, history, from));
     } else {
-      dispatch(signin(form, history));
+      dispatch(signin(form, history, from));
     }
   };
 
@@ -57,9 +60,15 @@ const Auth = () => {
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 // const handleChange = () => {}
 
+  const loggedOut = () => {
+    dispatch(logOut());
+  }
+
   return (
     <Container component="main" maxWidth="xs">
-      <Paper className={classes.paper} elevation={3}>
+      {
+        !stateUser ?
+        <Paper className={classes.paper} elevation={3}>
         {/* <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar> */}
@@ -99,6 +108,12 @@ const Auth = () => {
           </Grid>
         </form>
       </Paper>
+        :
+        <div>
+          User is already loggedin
+          <Button type="button" onClick={loggedOut}> LogOut </Button>
+        </div>
+      }
     </Container>
   );
 };

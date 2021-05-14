@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
+import { Prompt } from 'react-router-dom'
 import FileBase from 'react-file-base64';
 
-import { postEvent, updateEvent, setCurrentId } from '../../actions/actions'
+import { postEvent, updateEvent, setCurrentId } from '../../../actions/eventActions'
 
 import useStyles from './styles';
 // import { createPost, updatePost } from '../../actions/posts';
@@ -20,7 +21,6 @@ const Form = () => {
   // }, [post]);
 
   useEffect(() => {
-    console.log("onClickUpdate", currentEvent)
     if(currentEvent) {
       setEvent(currentEvent)
     }
@@ -62,6 +62,12 @@ const Form = () => {
         <TextField name="message" variant="outlined" label="Message" fullWidth value={eventData.message} onChange={onChangedata} />
         <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
         <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
+        <Prompt
+        when={false}
+        message={location =>
+          `Are you sure you want to go to ${location.pathname}`
+        }
+      />
       </form>
     </Paper>
   //   <Paper className={classes.paper}>
