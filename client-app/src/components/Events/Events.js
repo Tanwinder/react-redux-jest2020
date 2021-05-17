@@ -11,14 +11,18 @@ import Event from './Event'
 import useStyles from './styles';
 
 const Events = () => {
-  const events = useSelector((state) => state.events.allEvents);
-  const eventLoader = useSelector((state) => state.events.eventLoader);
+  const {eventLoader, events, currentEvent} = useSelector((state) => ({
+    eventLoader: state.events.eventLoader,
+    events: state.events.allEvents,
+    currentEvent: state.events.currentEvent
+
+  }));
   const classes = useStyles();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getEvents());
-  }, [])
+    if(!currentEvent) dispatch(getEvents());
+  }, [dispatch])
 
   return (
     eventLoader ? <CircularProgress /> : (

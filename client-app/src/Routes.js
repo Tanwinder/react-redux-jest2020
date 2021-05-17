@@ -30,7 +30,8 @@ const routesArr = () => ([
         {
             path: '/Employess',
             component: () => <h1>Employees Placeholder</h1>,
-            exact: false
+            exact: false,
+            privatePath: true
         },
         {
             path: '*',

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { Prompt } from 'react-router-dom'
+import { Prompt, useHistory } from 'react-router-dom'
 import FileBase from 'react-file-base64';
 
 import { postEvent, updateEvent, setCurrentId } from '../../../actions/eventActions'
@@ -12,8 +12,14 @@ import useStyles from './styles';
 const Form = () => {
   // const [postData, setPostData] = useState({ creator: '', title: '', message: '', tags: '', selectedFile: '' });
   const [eventData, setEvent] = useState({title: '', message: ''});
-  const currentEvent = useSelector((state) => state.events.currentEvent);
+  const {user, currentEvent} = useSelector((state) => {
+    return {
+      currentEvent: state.events.currentEvent,
+      user: state.user.userInfo
+    }
+  });
   const dispatch = useDispatch();
+  const history = useHistory();
   const classes = useStyles();
 
   // useEffect(() => {
@@ -21,8 +27,17 @@ const Form = () => {
   // }, [post]);
 
   useEffect(() => {
+    console.log('form history-------', history);
+    const comingFromLogin = history?.location?.state?.from?.pathname;
     if(currentEvent) {
-      setEvent(currentEvent)
+      if(comingFromLogin !== '/login') {
+        return setEvent(currentEvent)
+      }
+      if(comingFromLogin === '/login' && currentEvent._id) {
+        dispatch(updateEvent(currentEvent));
+      } else {
+        dispatch(postEvent(currentEvent));
+      }
     }
   },[currentEvent]);
 
@@ -36,8 +51,13 @@ const Form = () => {
       [e.target.name]: e.target.value
     })
   }
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    if(!user) {
+      // history.location is telling the previous url but history.pathname is telling the current url
+      dispatch(setCurrentId(eventData));
+      return history.push('/login', { from: history?.location });
+    }
     if(currentEvent) {
       dispatch(updateEvent(eventData));
       clear();

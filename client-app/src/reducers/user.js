@@ -1,4 +1,6 @@
+
 import {AUTH, LOG_OUT_USER} from '../actions/actionTypes';
+// const {AUTH, LOG_OUT_USER} = obj;
 const initialState = {
     userInfo: JSON.parse(localStorage.getItem('profile')) || null
 }

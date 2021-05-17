@@ -7,7 +7,6 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 // import Icon from './icon';
 import { signin, signup, logOut } from '../../actions/authActions';
-// import { AUTH } from '../../constants/actionTypes';
 import useStyles from './styles';
 import Input from './Input';
 
@@ -19,8 +18,6 @@ const Auth = () => {
   const stateUser = useSelector(state => state?.user?.userInfo);
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
-  let { from } = location.state || { from: { pathname: "/" } };
   const classes = useStyles();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -36,9 +33,9 @@ const Auth = () => {
     e.preventDefault();
 
     if (isAuth) {
-      dispatch(signup(form, history, from));
+      dispatch(signup(form, history));
     } else {
-      dispatch(signin(form, history, from));
+      dispatch(signin(form, history));
     }
   };
 

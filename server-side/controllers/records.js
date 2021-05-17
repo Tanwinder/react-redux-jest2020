@@ -61,6 +61,7 @@ const updateEvent = async (req, res) => {
 
 const likeEvent = async (req, res) => {
     const { id } = req.params;
+    if(!req.userId) return res.status(401).send("unauthorized user");
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`no event exist for id ${id}`);
 
     const event = await Record.findById(id);

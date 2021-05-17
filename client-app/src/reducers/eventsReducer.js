@@ -1,4 +1,5 @@
 import {GET_EVENTS, EVENTS_LOADER, POST_EVENT, DELETE_EVENT, UPDATE_EVENT, SET_CURRENT_ID} from '../actions/actionTypes';
+// const {GET_EVENTS, EVENTS_LOADER, POST_EVENT, DELETE_EVENT, UPDATE_EVENT, SET_CURRENT_ID} = obj;
 
 const initial_state = {
     allEvents: [],
@@ -23,6 +24,7 @@ export default (state= initial_state, action) => {
                 ...state,
                 allEvents: [...state.allEvents, action.payload],
                 eventLoader: false,
+                currentEvent: null
             }  
         case DELETE_EVENT:
             return {

@@ -2,12 +2,19 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import {navsArr} from '../../Routes';
 
 export default function Navs() {
-  const [value, setValue] = React.useState(0);
+  const {pathname} = useLocation();
+  let tabval = pathname.split('/')[1];
+  const tabArr = {
+    events: 0,
+    counter: 1,
+    employees: 2
+  }
+  const [value, setValue] = React.useState(tabArr[tabval.toLowerCase()]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
