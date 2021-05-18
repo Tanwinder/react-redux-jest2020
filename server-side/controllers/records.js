@@ -19,7 +19,7 @@ const createRecord = async (req, res) => {
     const {title, message, tags, selectedFile } = req.body;
     console.log("req.body=----", req.body);
     if(!req.userId) return res.status(401).send({message: 'unauthenticated user'});
-    const newRecord = new Record({title, message, creator: `${req.firstName} ${req.lastName}`,tags, selectedFile });
+    const newRecord = new Record({title, message, creatorEmail: req.email, creator: `${req.firstName} ${req.lastName}`,tags, selectedFile });
     
     try {
         await newRecord.save();
@@ -36,7 +36,11 @@ const deleteRecord = async (req, res) => {
         if(!req.userId) return res.status(401).send("unauthorized user");
         if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
 
-        const deletedRecord = await Record.findByIdAndRemove(id);
+        const event = await Record.findById(id);
+        if(event.creatorEmail !== req.email) return res.status(403).send({message: "user doesnot have permission to delete this event"})
+
+        // const deletedRecord = await Record.findByIdAndRemove(id);
+        const deletedRecord = await Record.findOneAndDelete({_id: id})
         console.log("deletedRecord", deletedRecord)
 
         res.json(deletedRecord);
@@ -65,7 +69,16 @@ const likeEvent = async (req, res) => {
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`no event exist for id ${id}`);
 
     const event = await Record.findById(id);
-    const updatedEvent = await Record.findByIdAndUpdate(id, {likeCount: event.likeCount + 1}, {new: true});
+    // const event
+    // if(event)
+    let index = event.likes.findIndex(item => item === String(req.userId));
+    if(index === -1) {
+        event.likes.push(req.userId);
+    } else {
+        event.likes = event.likes.filter( item => item !== String(req.userId));
+    }
+
+    const updatedEvent = await Record.findByIdAndUpdate(id, event, {new: true});
     res.status(200).json(updatedEvent);
 }
 

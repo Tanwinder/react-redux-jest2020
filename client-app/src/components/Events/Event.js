@@ -4,13 +4,14 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { likeEvent, deleteEvent, setCurrentId } from '../../actions/eventActions';
 import useStyles from './styles';
 
 const Event = ({ event }) => {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user.userInfo);
   const classes = useStyles();
 
   const onClickDelete= () => {
@@ -33,7 +34,7 @@ const Event = ({ event }) => {
         {/* <Typography variant="body2">{moment(event.createdAt).fromNow()}</Typography> */}
       </div>
       <div className={classes.overlay2}>
-        <Button style={{ color: 'white' }} size="small" onClick={onClickUpdate}><MoreHorizIcon fontSize="default" /></Button>
+        <Button disabled={!user || user?.result?.email !== event.creatorEmail} style={{ color: 'white' }} size="small" onClick={onClickUpdate}><MoreHorizIcon fontSize="default" /></Button>
       </div>
       {/* <div className={classes.details}>
         <Typography variant="body2" color="textSecondary" component="h2">{event.tags.map((tag) => `#${tag} `)}</Typography>
@@ -46,8 +47,8 @@ const Event = ({ event }) => {
         <Typography variant="body2" color="textSecondary" component="p">{event.message}</Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary" onClick={onClickLike}><ThumbUpAltIcon fontSize="small" /> Like {event.likeCount} </Button>
-        <Button size="small" color="primary" onClick={onClickDelete}><DeleteIcon fontSize="small" /> Delete</Button>
+        <Button size="small" disabled={!user} color="primary" onClick={onClickLike}><ThumbUpAltIcon fontSize="small" /> Like {event.likes.length} </Button>
+        <Button size="small" disabled={!user || user?.result?.email !== event.creatorEmail} color="primary" onClick={onClickDelete}><DeleteIcon fontSize="small" /> Delete</Button>
       </CardActions>
     </Card>
     // <Card className={classes.card}>
@@ -67,7 +68,7 @@ const Event = ({ event }) => {
     //     <Typography variant="body2" color="textSecondary" component="p">{event.message}</Typography>
     //   </CardContent>
     //   <CardActions className={classes.cardActions}>
-    //     <Button size="small" color="primary" onClick={() => dispatch(likeevent(event._id))}><ThumbUpAltIcon fontSize="small" /> Like {event.likeCount} </Button>
+    //     <Button size="small" color="primary" onClick={() => dispatch(likeevent(event._id))}><ThumbUpAltIcon fontSize="small" /> Like {event.likes.length} </Button>
     //     <Button size="small" color="primary" onClick={() => dispatch(deleteevent(event._id))}><DeleteIcon fontSize="small" /> Delete</Button>
     //   </CardActions>
     // </Card>

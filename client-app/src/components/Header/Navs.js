@@ -8,7 +8,7 @@ import {navsArr} from '../../Routes';
 
 export default function Navs() {
   const {pathname} = useLocation();
-  let tabval = pathname.split('/')[1];
+  let tabval = pathname.split('/')[1] || 'events';
   const tabArr = {
     events: 0,
     counter: 1,

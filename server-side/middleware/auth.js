@@ -16,8 +16,9 @@ const authMiddleware = async (req, res, next) => {
             req.userId = decoded.id;
             req.firstName = decoded.firstname;
             req.lastName = decoded.lastname;
+            req.email = decoded.email
         }
-        console.log('token middleware ---', token, req.userId, req.firstName, req.lastName);
+        console.log('token middleware ---', token, req.userId, req.firstName, req.lastName, req.email);
         next();
     } catch (error) {
         console.log('error---midleware ---', error);

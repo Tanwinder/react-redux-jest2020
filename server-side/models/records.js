@@ -14,6 +14,10 @@ const Record = new Schema({
         type: String,
         required: true
     },
+    creatorEmail: {
+        type: String,
+        required: true
+    },
     tags: {
         type: [String],
         default: ["#Vball", "#BBall"]
@@ -22,9 +26,9 @@ const Record = new Schema({
         type: String,
         default: ""
     },
-    likeCount: {
-        type: Number,
-        default: 0,
+    likes: {
+        type: [String],
+        default: [],
     },
     createdAt: {
         type: Date,

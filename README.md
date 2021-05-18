@@ -1,14 +1,19 @@
-client side webpack setup -
-If you're upgrading from webpack 4 to webpack 5, here are a few notes:
+// react redux redux-saga node express mongoose with create-react-app
 
-the webpack-dev-server command is now webpack-serve
-file-loader, raw-loader and url-loader are not necessary, you can use built in asset modules
-Node polyfills are no longer available, so if you get an error for stream, for example, you would add the stream-browserify package as a dependency and add { stream: 'stream-browserify' } to the alias property in your webpack config.
+1. sign in - normal
+2. sign up - google, normal
+3. create event - logged in
+4. Get events - non logged in
+5. delete event - logged in
+6. Like event - logged in
 
-1. const path = require('path')
 
-module.exports = {
-  entry: {
-    main: path.resolve(__dirname, './src/index.js'),
-  },
-}
+Pending Items - 
+1. deploy on netlify
+2. signup with Google
+3. fetch employee list
+4. create counter
+5. testing - jest + react
+6. add image + display image
+7. logout user after 30mins inactivity
+8. web sockets
