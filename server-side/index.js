@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv')
 const eventRoutes = require('./routes/eventRoutes');
-const LoginRoutes = require('./routes/loginRoutes')
+const LoginRoutes = require('./routes/loginRoutes');
+const houseInventory = require('./routes/houseInventory')
 dotenv.config();
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors());
 app.use('/auth',LoginRoutes);
+app.use('/api/items',houseInventory);
 // app.use(eventRoutes());
 eventRoutes(app);
 
